@@ -1,8 +1,19 @@
-GitHub: https://github.com/arizalnurrohman/gurindamxii.git
+GitHub: https://github.com/arizalnurrohman/gurindamxii_pku.git
 Local : http://178.100.212.233:8000/
 
 TEST ACCOUNT:
 USERNAME: arizalnurrohman@gmail.com
 PASSWORD: password
 
-git remote add origin https://github.com/arizalnurrohman/gurindamxii.git
+
+echo "# gurindamxii_pku" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/arizalnurrohman/gurindamxii_pku.git
+git push -u origin main
+
+git remote add origin https://github.com/arizalnurrohman/gurindamxii_pku.git
+git branch -M main
+git push -u origin main
