@@ -1,0 +1,91 @@
+php artisan module:make-controller PengetahuanController Ipanel
+php artisan module:make-model PengetahuanModel Ipanel
+php artisan module:make-migration create_pengetahuan_table Ipanel
+
+php artisan module:make-controller PengetahuanCategoryController Ipanel
+php artisan module:make-model PengetahuanCategoryModel Ipanel
+php artisan module:make-migration create_pengetahuan_category_table Ipanel
+
+php artisan module:make-controller PengetahuanCommentController Ipanel
+php artisan module:make-model PengetahuanCommentModel Ipanel
+php artisan module:make-migration create_pengetahuan_comment_table Ipanel
+
+php artisan module:make-controller PengetahuanContentController Ipanel
+php artisan module:make-model PengetahuanContentModel Ipanel
+php artisan module:make-migration create_pengetahuan_content_table Ipanel
+
+php artisan module:make-controller PengetahuanHighlightController Ipanel
+php artisan module:make-model PengetahuanHighlightModel Ipanel
+php artisan module:make-migration create_pengetahuan_highlight_table Ipanel
+
+php artisan module:make-controller PengetahuanRatingController Ipanel
+php artisan module:make-model PengetahuanRatingModel Ipanel
+php artisan module:make-migration create_pengetahuan_rating_table Ipanel
+
+
+####################
+php artisan module:make-controller DashboardController Front
+php artisan module:make-model DashboardModel Front
+
+php artisan module:make-controller MateriController Front
+php artisan module:make-model MateriModel Front
+
+php artisan module:make-controller SettingController Front
+php artisan module:make-model SettingModel Front
+
+php artisan module:make-controller RiwayatBacaController Front
+php artisan module:make-model RiwayatBacaModel Front
+
+php artisan module:make-controller DaftarkuController Front
+php artisan module:make-model DaftarkuBacaModel Front
+
+php artisan module:make-controller Post_ajaxController Front
+
+php artisan module:make-controller HubungiAdminController Front
+php artisan module:make-model HubungiAdminModel Front
+
+php artisan module:make-controller PengaturanController Front
+php artisan module:make-model PengaturanModel Front
+
+php artisan module:make-controller VerifikasiController Front
+
+php artisan module:make-migration create_pengetahuan_activity_table Ipanel
+
+php artisan module:make-migration create_pengetahuan_like_table Ipanel
+php artisan module:make-migration create_pengetahuan_readlist_table Ipanel
+php artisan module:make-migration create_pengetahuan_readlist_content_table Ipanel
+php artisan module:make-migration create_pengetahuan_pinned_table Ipanel
+
+php artisan module:make-migration create_contact_us_table Ipanel
+
+php artisan module:make-controller ContactusController Front
+php artisan module:make-model ContactusModel Front
+
+php artisan module:make-controller ContactUsController Ipanel
+php artisan module:make-model ContactUsModel Ipanel
+
+php artisan module:make-controller HubungiAdminController Ipanel
+php artisan module:make-model HubungiAdminModel Ipanel
+php artisan module:make-migration create_hubungi_admin_table Ipanel
+
+php artisan module:make-migration create_pengetahuan_read_content_table Ipanel
+
+#NEWSLETTER
+php artisan module:make-controller NewsLetterController Ipanel
+php artisan module:make-model NewsLetterModel Ipanel
+php artisan module:make-migration create_newsletter_table Ipanel
+
+php artisan module:make-controller NewsLetterSubscriberController Ipanel
+php artisan module:make-model NewsLetterSubscriberModel Ipanel
+php artisan module:make-migration create_newsletter_subscriber_table Ipanel
+
+php artisan module:make-controller NewsLetterQueueController Ipanel
+php artisan module:make-model NewsLetterQueueModel Ipanel
+php artisan module:make-migration create_newsletter_queue_table Ipanel
+
+php artisan module:make-migration create_newsletter_template_table Ipanel
+
+
+
+
+

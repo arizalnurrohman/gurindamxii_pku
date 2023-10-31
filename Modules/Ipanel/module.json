@@ -1,0 +1,11 @@
+{
+    "name": "Ipanel",
+    "alias": "ipanel",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Ipanel\\Providers\\IpanelServiceProvider"
+    ],
+    "files": []
+}

@@ -1,0 +1,3 @@
+npm run dev
+
+php artisan serve --host=178.100.212.233 --port=8000
