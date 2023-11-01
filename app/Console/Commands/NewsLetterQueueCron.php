@@ -26,9 +26,9 @@ class NewsLetterQueueCron extends Command
      */
     public function handle()
     {
-        $newsletter     = DB::table("newsletter")->where('newsGenerate',"n")->first();
+        $newsletterx     = DB::table("newsletter")->where('newsGenerate',"n")->get();
         #INSERT INTO NEWS LETTER QUEUE
-        if($newsletter){
+       foreach($newsletterx as $key=>$newsletter){
             $NEWS_JUDUL     =$newsletter->newsTitle;
             $NEWS_GAMBAR    =$newsletter->newsImage;
             $NEWS_URL       =$newsletter->newsURL;
