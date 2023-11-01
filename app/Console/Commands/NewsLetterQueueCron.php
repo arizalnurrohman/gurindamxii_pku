@@ -48,7 +48,7 @@ class NewsLetterQueueCron extends Command
             $subscriber     = DB::table("newsletter_subscriber")->select("nsubId","nsubEmail")->where("nsubStatus","y")->get();
             #nqId 	nqPermalink 	newsId 	nsubId 	nqBody 	nqEmail 	nqSent 	created_at 	updated_at 	
             foreach($subscriber as $key=>$val){
-                $RESULTS        =str_replace("[NEWS_EMAIL_TARGET]",$va->nsubEmail,$RESULTS);
+                $RESULTS        =str_replace("[NEWS_EMAIL_TARGET]",$val->nsubEmail,$RESULTS);
                 $cavailable     =DB::table("newsletter_queue")->where('newsId',$newsletter->newsId)->where('nqEmail',$val->nsubEmail)->first();
                 if(!$cavailable){
                     $payload=array(

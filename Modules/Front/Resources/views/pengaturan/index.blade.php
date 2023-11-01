@@ -158,7 +158,7 @@
             success: function(data) {
                 // alert(data.success);
                 //alert(data);
-                if($.isEmptyObject(data.error)){
+                if($.isEmptyObject(data.errors)){
                     $(".alert-danger").css('display','none');
                     swal({ 
                             html:true,
@@ -171,7 +171,7 @@
                             html:true,
                             type: 'error',
                             title: 'Error',
-                            text:'<span style="font-size:14px">'+ data.error +'</span>',
+                            text:'<span style="font-size:14px">'+ data.errors +'</span>',
                     });
                 }
             }

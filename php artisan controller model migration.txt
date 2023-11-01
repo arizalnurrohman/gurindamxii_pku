@@ -49,6 +49,8 @@ php artisan module:make-model PengaturanModel Front
 
 php artisan module:make-controller VerifikasiController Front
 
+php artisan module:make-controller UnsubscribeController Front
+
 php artisan module:make-migration create_pengetahuan_activity_table Ipanel
 
 php artisan module:make-migration create_pengetahuan_like_table Ipanel

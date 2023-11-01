@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'App\\Console\\Commands\\NewsLetterQueueCron' => $baseDir . '/app/Console/Commands/NewsLetterQueueCron.php',
+    'App\\Console\\Commands\\SendNewsLetterCron' => $baseDir . '/app/Console/Commands/SendNewsLetterCron.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
     'App\\Helper\\ImageManager' => $baseDir . '/app/Helper/ImageManager.php',

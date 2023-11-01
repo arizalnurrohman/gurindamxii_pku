@@ -49,6 +49,9 @@ Route::prefix('front')->group(function() {
     Route::get('verifikasi/resend_code/code', 'VerifikasiController@resend_code')->name('verifikasi.resend_code');
     Route::get('verifikasi/change_email/code', 'VerifikasiController@change_email')->name('verifikasi.change_email');
 
+    Route::resource('unsubscribe','UnsubscribeController');
+    Route::get('unsubscribe/email/{id}', 'UnsubscribeController@email')->name('unsubscribe.email');
+
     #Route::post('front/post_contactus', 'FrontController@post_contactus')->name('front.post_contactus');
 
 });

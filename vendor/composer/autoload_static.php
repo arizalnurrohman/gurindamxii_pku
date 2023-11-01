@@ -575,6 +575,7 @@ class ComposerStaticIniteeecb4ce8043846568cdcb1356fd9adb
 
     public static $classMap = array (
         'App\\Console\\Commands\\NewsLetterQueueCron' => __DIR__ . '/../..' . '/app/Console/Commands/NewsLetterQueueCron.php',
+        'App\\Console\\Commands\\SendNewsLetterCron' => __DIR__ . '/../..' . '/app/Console/Commands/SendNewsLetterCron.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Helper\\ImageManager' => __DIR__ . '/../..' . '/app/Helper/ImageManager.php',
