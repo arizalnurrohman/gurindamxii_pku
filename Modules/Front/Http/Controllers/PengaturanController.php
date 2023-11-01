@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Mail;
 class PengaturanController extends Controller
 {
     public $table_user             ="users";
+    public $table_newsletter_subs  ="newsletter_subscriber";
     /**
      * Display a listing of the resource.
      * @return Renderable
@@ -104,9 +105,57 @@ class PengaturanController extends Controller
                 }
             }
             
+            
             if($errors){
                 return response()->json(['errors'=>$errors]);exit;
             }else{
+                if($request->prberlangganan=="y"){
+                    if($get_data->email != $request->premail){
+                        $c_email=DB::table($this->table_newsletter_subs)->where('nsubEmail',$request->premail)->where('nsubStatus','y')->first();
+                        $update_c=DB::table($this->table_newsletter_subs)->where('nsubEmail', $c_email->nsubEmail)->update(['nsubStatus' => 'n','nsubUnSubsribe'=>date('Y-m-d H:i:s')]);
+                        
+                        $next_id    =$this->nextid("newsletter_subscriber","nsubId");
+                        $payload_c=array(
+                            "nsubId"        =>$next_id,
+                            "nsubPermalink" =>$next_id."-".sha1($next_id),
+                            "nsubEmail"     =>$request->premail,
+                            "nsubStatus"    =>'y',
+                            "nsubSubsribe"  =>date("Y-m-d H:i:s"),
+                        );
+                        $insert_c=DB::table($this->table_newsletter_subs)->insert($payload_c);
+                    }else{
+                        $c_email=DB::table($this->table_newsletter_subs)->where('nsubEmail',$request->premail)->where('nsubStatus','n');
+                        if($c_email->count()>0){
+                            $c_email =$c_email->first();
+                            $update_c=DB::table($this->table_newsletter_subs)->where('nsubEmail', $c_email->nsubEmail)->update(['nsubStatus' => 'y','nsubUnSubsribe'=>date('Y-m-d H:i:s')]);
+                        }else{
+                            $next_id    =$this->nextid("newsletter_subscriber","nsubId");
+                            $payload_c=array(
+                                "nsubId"        =>$next_id,
+                                "nsubPermalink" =>$next_id."-".sha1($next_id),
+                                "nsubEmail"     =>$request->premail,
+                                "nsubStatus"    =>'y',
+                                "nsubSubsribe"  =>date("Y-m-d H:i:s"),
+                            );
+                            $insert_c=DB::table($this->table_newsletter_subs)->insert($payload_c);
+                        }
+                    }
+                }else{
+                    if($get_data->email != $request->premail){
+                        $c_email=DB::table($this->table_newsletter_subs)->where('nsubEmail',$get_data->email)->where('nsubStatus','y')->first();
+                        $update_c=DB::table($this->table_newsletter_subs)->where('nsubEmail', $c_email->nsubEmail)->update(['nsubStatus' => 'n','nsubUnSubsribe'=>date('Y-m-d H:i:s')]);
+
+                        $c_email=DB::table($this->table_newsletter_subs)->where('nsubEmail',$request->premail)->where('nsubStatus','y')->first();
+                        $update_c=DB::table($this->table_newsletter_subs)->where('nsubEmail', $c_email->nsubEmail)->update(['nsubStatus' => 'n','nsubUnSubsribe'=>date('Y-m-d H:i:s')]);
+                    }else{
+                        $c_email=DB::table($this->table_newsletter_subs)->where('nsubEmail',$get_data->email)->where('nsubStatus','y');
+                        if($c_email->count()>0){
+                            $c_email=$c_email->first();
+                            $update_c=DB::table($this->table_newsletter_subs)->where('nsubEmail', $c_email->nsubEmail)->update(['nsubStatus' => 'n','nsubUnSubsribe'=>date('Y-m-d H:i:s')]);
+                        }
+                    }
+                }
+
                 $payload=array(
                     "name"      =>$request->prname,
                     "updated_at"=>date("Y-m-d H:i:s"),
@@ -127,6 +176,11 @@ class PengaturanController extends Controller
             }
         }
 
+    }
+
+    public function nextid($tablename,$fieldname){
+        $order =DB::table($tablename)->max($fieldname);
+		return ($order + 1);
     }
 
     /**

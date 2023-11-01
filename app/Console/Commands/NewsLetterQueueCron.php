@@ -34,6 +34,7 @@ class NewsLetterQueueCron extends Command
             $NEWS_URL       =$newsletter->newsURL;
             $NEWS_BODY      =$newsletter->newsContent;
             $NEWS_TMPLT     =$newsletter->nwtId;
+            $NEWS_URL_BASE  =url('/');
             
             $query          = DB::table("newsletter_template")->where('nwtId',$NEWS_TMPLT)->first();
             $RESULTS        ="";
@@ -41,10 +42,13 @@ class NewsLetterQueueCron extends Command
             $RESULTS        =str_replace("[NEWS_URL_IMAGES]",$NEWS_GAMBAR,$RESULTS);
             $RESULTS        =str_replace("[NEWS_BODY]",$NEWS_BODY,$RESULTS);
             $RESULTS        =str_replace("[NEWS_URL_CONTENT]",$NEWS_URL,$RESULTS);
+            $RESULTS        =str_replace("[NEWS_URL_BASE]",$NEWS_URL_BASE,$RESULTS);
+            
             
             $subscriber     = DB::table("newsletter_subscriber")->select("nsubId","nsubEmail")->where("nsubStatus","y")->get();
             #nqId 	nqPermalink 	newsId 	nsubId 	nqBody 	nqEmail 	nqSent 	created_at 	updated_at 	
             foreach($subscriber as $key=>$val){
+                $RESULTS        =str_replace("[NEWS_EMAIL_TARGET]",$va->nsubEmail,$RESULTS);
                 $cavailable     =DB::table("newsletter_queue")->where('newsId',$newsletter->newsId)->where('nqEmail',$val->nsubEmail)->first();
                 if(!$cavailable){
                     $payload=array(

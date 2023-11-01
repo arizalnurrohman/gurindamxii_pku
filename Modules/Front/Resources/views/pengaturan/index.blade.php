@@ -75,31 +75,54 @@
                                     <form class="form-block" action="{{route('pengaturan.store')}}" method="POST" id="post_pengaturan">
                                         @csrf
                                         <div class="form-group">
-                                            <label for="forname">Nama</label>
-                                            <input name="prname" class="form-control" id="prname" aria-describedby="nameHelp" placeholder="Enter email" value="{{$data['data']->name}}">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="foremail">Email</label>
-                                            <input name="premail" type="email" class="form-control" id="premail" aria-describedby="emailHelp" placeholder="Enter email" value="{{$data['data']->email}}">
+                                            <label for="forname">Nama:</label>
+                                            <input name="prname" class="form-control" id="prname" aria-describedby="nameHelp" placeholder="Masukkan Nama" value="{{$data['data']->name}}">
                                         </div>
                                         <div class="form-group" style="text-align:right">
                                             &nbsp;
                                         </div>
                                         <div class="form-group">
-                                            <label for="foroldpassword">Password Lama</label>
+                                            <label for="foremail">Email:</label>
+                                            <input name="premail" type="email" class="form-control" id="premail" aria-describedby="emailHelp" placeholder="Masukkan email" value="{{$data['data']->email}}">
+                                        </div>
+                                        <div class="form-group" style="text-align:right">
+                                            &nbsp;
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="foroldpassword">Password Lama:</label>
                                             <input name="oldpassword" type="password" class="form-control" id="oldpassword" placeholder="Password Lama">
                                             <small id="emailHelp" class="form-text text-muted">Kosongkan apabila tidak mengubah password.</small>
                                         </div>
+                                        <div class="form-group" style="text-align:right">
+                                            &nbsp;
+                                        </div>
                                         <div class="form-group">
-                                            <label for="forpassword">Password Baru</label>
+                                            <label for="forpassword">Password Baru:</label>
                                             <input name="prpassword" type="password" class="form-control" id="prpassword" placeholder="Password Baru">
                                             <small id="emailHelp" class="form-text text-muted">Kosongkan apabila tidak mengubah password.</small>
                                         </div>
+                                        <div class="form-group" style="text-align:right">
+                                            &nbsp;
+                                        </div>
                                         <div class="form-group">
-                                            <label for="forrepassword">Password (Ulang)</label>
+                                            <label for="forrepassword">Password (Ulang):</label>
                                             <input name="prrepassword" type="password" class="form-control" id="prrepassword" placeholder="Password Baru (Ulang)">
                                             <small id="emailHelp" class="form-text text-muted">Kosongkan apabila tidak mengubah password.</small>
                                         </div>
+                                        <div class="form-group" style="text-align:right">
+                                            &nbsp;
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="forrepassword">Berlangganan Buletin:</label>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" name="prberlangganan" value="y" type="checkbox" id="flexSwitchCheckChecked" checked>
+                                                <label class="form-check-label" for="flexSwitchCheckChecked">Saya bersedia Berlangganan Buletin Gurindam</label>
+                                            </div>
+                                            <small id="emailHelp" class="form-text text-muted">Anda akan menerima Buletin Materi Gurindam apabila Menyetujui.</small>
+                                        </div>
+
+
+                                        
                                         <div class="form-group" style="text-align:right">
                                             &nbsp;
                                             <button type="submit" class="btn btn-primary btn-submit">Update Data Anda</button>

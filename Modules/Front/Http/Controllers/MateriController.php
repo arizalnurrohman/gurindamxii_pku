@@ -353,11 +353,11 @@ class MateriController extends Controller
                                 var title=$(this).attr('title');
                                 //if(confirmMe('Are You Sure Want to Delete '+$(this).attr('title').replace('Hapus: ','')+'?')){
                                     $.get($(this).attr('href'),function(data){
-                                        $('.'+title).hide();
                                         //var obj = JSON.parse(data);
                                         const splits=title.split('_');
                                         //if(obj.success){
                                         if($.isEmptyObject(data.errors)){
+                                            $('.'+title).hide();
                                             $.gritter.add({
                                                 text:data.notification,
                                               });
@@ -375,7 +375,7 @@ class MateriController extends Controller
                                                   html:true,
                                                   type: 'error',
                                                   title: 'Error',
-                                                  text:'<span style=\"font-size:14px\">'+ obj.error +'</span>',
+                                                  text:'<span style=\"font-size:14px\">'+ data.notification +'</span>',
                                             });
                                         }
                                     })
@@ -605,60 +605,76 @@ class MateriController extends Controller
     public function post_finish(Request $request, $id){
         $data_get   =$this->get_content($id);
         $ins_toread =$this->read_materi($data_get->pgId);
+        $get_user   =DB::table($this->table_user)
+                                ->where('id', session()->get('USER_LOGIN.ID'))
+                                ->first();
         // print "<pre>";
         // print_r($data_get);
         // print "</pre>";
         // exit;
-        
-        #CHECK LOG----------------------------------------------------------------
-        $check_log = DB::table($this->table_pengetahuan_read)
-                    ->where('pgId', $data_get->pgId)
-                    ->where('id_user', session()->get('USER_LOGIN.ID'))
-                    ->first();
-                
-        if($check_log){
-            $check_logx = DB::table($this->table_pengetahuan_read_content)
-                ->where('pcId', $data_get->pcId)
-                ->where('prId', $check_log->prId)
-                ->count();               
-            if($check_logx===0){
-                $payload_actual=[
-                    'prId'       => $check_log->prId,
-                    'pcId'       => $data_get->pcId,
-                    'created_at' => date("Y-m-d H:i:s"),
-                ];
-
-                $save_actual=DB::table($this->table_pengetahuan_read_content)->insert($payload_actual);
-
-                $payload=[
-                    'readActual'        => ($check_log->readActual)+1,
-                ];
-                $update_cfinish=DB::table($this->table_pengetahuan_read)->where('prId', $check_log->prId)->update($payload);
-                if($update_cfinish){
-                    #DELETE FROM BACA NANTI
-                    $get_rl     =DB::table($this->table_pengetahuan_readlist)
-                                                ->where('id_user',session()->get('USER_LOGIN.ID'))
-                                                ->where('rlTitle', 'BACA_NANTI')
-                                                ->first();
-
-                    $run_query=DB::table($this->table_pengetahuan_readlist_content)
-                                            ->where('rlId', $get_rl->rlId)
-                                            ->where('pgId',$data_get->pgId)
-                                            ->delete();
-                }
-
-            }
-        }
-        
-        $notification ='<div style="text-align:center">
-                            <img src="/assets/images/check.png" width="50px">
+        if($get_user->verified=="n"){
+            $notification ='<div style="text-align:center">
+                            <img src="/assets/images/cross.png" width="50px">
                         </div>
                         <div style="text-align:justify">
-                           Sub Materi <strong style="color:#FFC451">'.$data_get->pcTitle.'</strong> pada Materi <strong style="color:#FFC451">'.$data_get->pgTitle.'</strong> berhasil ditandai sebagai Materi yang selesai dibaca/ dilihat
+                           Anda harus Memverifikasi Akun anda terlebih dahulu untuk dapat menggunakan Fitur ini.
                         </div>';
-        return response()->json(['success'=>["id"=>$id],"notification"=>$notification]);
+            return response()->json(['errors'=>["id"=>$id],"notification"=>$notification]);
+            exit;
+        }else{
+        
+            #CHECK LOG----------------------------------------------------------------
+            $check_log = DB::table($this->table_pengetahuan_read)
+                        ->where('pgId', $data_get->pgId)
+                        ->where('id_user', session()->get('USER_LOGIN.ID'))
+                        ->first();
+                    
+            if($check_log){
+                $check_logx = DB::table($this->table_pengetahuan_read_content)
+                    ->where('pcId', $data_get->pcId)
+                    ->where('prId', $check_log->prId)
+                    ->count();               
+                if($check_logx===0){
+                    $payload_actual=[
+                        'prId'       => $check_log->prId,
+                        'pcId'       => $data_get->pcId,
+                        'created_at' => date("Y-m-d H:i:s"),
+                    ];
 
-        exit;
+                    $save_actual=DB::table($this->table_pengetahuan_read_content)->insert($payload_actual);
+
+                    $payload=[
+                        'readActual'        => ($check_log->readActual)+1,
+                    ];
+                    $update_cfinish=DB::table($this->table_pengetahuan_read)->where('prId', $check_log->prId)->update($payload);
+                    if($update_cfinish){
+                        #DELETE FROM BACA NANTI
+                        $get_rl     =DB::table($this->table_pengetahuan_readlist)
+                                                    ->where('id_user',session()->get('USER_LOGIN.ID'))
+                                                    ->where('rlTitle', 'BACA_NANTI');
+                                                    
+                        if($get_rl->count()>0){
+                            $get_rl=$get_rl->first();
+                            $run_query=DB::table($this->table_pengetahuan_readlist_content)
+                                                ->where('rlId', $get_rl->rlId)
+                                                ->where('pgId',$data_get->pgId)
+                                                ->delete();
+                        }
+                    }
+
+                }
+            }
+            
+            $notification ='<div style="text-align:center">
+                                <img src="/assets/images/check.png" width="50px">
+                            </div>
+                            <div style="text-align:justify">
+                            Sub Materi <strong style="color:#FFC451">'.$data_get->pcTitle.'</strong> pada Materi <strong style="color:#FFC451">'.$data_get->pgTitle.'</strong> berhasil ditandai sebagai Materi yang selesai dibaca/ dilihat
+                            </div>';
+            return response()->json(['success'=>["id"=>$id],"notification"=>$notification]);
+
+            exit;
+        }
     }
 
     public static function get_beread($contentlink){
