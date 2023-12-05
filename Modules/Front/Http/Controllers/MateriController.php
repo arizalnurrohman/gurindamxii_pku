@@ -23,6 +23,8 @@ class MateriController extends Controller
     public $table_pengetahuan_activity      ="pengetahuan_activity";
     public $table_pengetahuan_read          ="pengetahuan_read";
     public $table_pengetahuan_read_content  ="pengetahuan_read_content";
+    public $table_pengetahuan_rating        ="pengetahuan_rating";
+
 
     public $table_pengetahuan_readlist              ="pengetahuan_readlist";
     public $table_pengetahuan_readlist_content      ="pengetahuan_readlist_content";
@@ -278,10 +280,11 @@ class MateriController extends Controller
                     "height"=>200
                 )
             ),
-            "data"=>$data_get,
-            "materi_lain"=>$data_om,#array("asd","asdasd","asdasdas"),
-            "komentar"=>$data_com,
-            "new_ajax"  =>"
+            "data"          =>$data_get,
+            "materi_lain"   =>$data_om,#array("asd","asdasd","asdasdas"),
+            "komentar"      =>$data_com,
+            "rating"        =>round((DB::table($this->table_pengetahuan_rating)->where("pgId",$data_get->pgId)->avg('rtRate')),1),
+            "new_ajax"      =>"
                             $('.post_comments').submit(function(e){
                                 e.preventDefault(); 
                                 //var lokasi_komentar= $('.post_comments').find('.list_reply_comments').val();//$(this).closest('form').find('.list_reply_comments').val();

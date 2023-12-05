@@ -16,6 +16,7 @@ class PostAjaxController extends Controller
     public $table_pengetahuan_pinned            ="pengetahuan_pinned";
     public $table_pengetahuan_readlist          ="pengetahuan_readlist";
     public $table_pengetahuan_readlist_content  ="pengetahuan_readlist_content";
+    public $table_pengetahuan_rating            ="pengetahuan_rating";
 
     public $table_newsletter_subscriber         ="newsletter_subscriber";
     
@@ -280,7 +281,43 @@ class PostAjaxController extends Controller
     }
 
     public function post_rating(Request $request,$id){
-        $response=array("success"=>"ok");
+        #$request->numberOfWords
+        if(session()->get('USER_LOGIN')){
+            $id_user    =session()->get('USER_LOGIN.ID');
+            $data_pg    = DB::table($this->table_pengetahuan)->where('pgPermalink', $request->id)->first();
+            $avg_stars  = DB::table($this->table_pengetahuan_rating)->where("pgId",$data_pg->pgId)->avg('rtRate');
+            if($data_pg){
+                $check_rt    = DB::table($this->table_pengetahuan_rating)->where('pgId', $data_pg->pgId)->where('id_user', $id_user)->first();
+                if(!$check_rt){
+                    # 	rtId 	pgId 	id_user 	rtRate 	rtAddedDate 	created_at 	updated_at 	
+                    $payload=array(
+                        "pgId"          =>$data_pg->pgId,
+                        "id_user"       =>$id_user,
+                        "rtRate"        =>$request->numberOfWords,
+                        "rtAddedDate"   =>date('Y-m-d H:i:s'),
+                        "created_at"    =>date('Y-m-d H:i:s'),
+                    );
+                    $save_rate=DB::table($this->table_pengetahuan_rating)->insert($payload);
+                    $msg    ="Anda berhasil Memberikan Penilaian Rating dengan Penilaian <strong>Bintang ".$request->numberOfWords."</stRong> pada Materi <strong>".$data_pg->pgTitle."</strong>.";
+                }else{
+                    $payload=array(
+                        "rtRate"        =>$request->numberOfWords,
+                        "updated_at"    =>date('Y-m-d H:i:s'),
+                    );
+                    $update_rate=DB::table($this->table_pengetahuan_rating)->where('id_user', $id_user)->where('pgId', $data_pg->pgId)->update($payload);
+                    $msg    ="Anda berhasil Mengubah Penilaian Rating dengan Penilaian dari <strong>Bintang ".$check_rt->rtRate."</strong> Menjadi <strong>Bintang ".$request->numberOfWords."</stRong> pada Materi <strong>".$data_pg->pgTitle."</strong>.";
+                }
+                $logo       ="check";
+                $avg_stars  = DB::table($this->table_pengetahuan_rating)->where("pgId",$data_pg->pgId)->avg('rtRate');
+            }else{
+                $msg    ="Materi yang anda pilih tidak ditemukan";
+                $logo   ="cross";
+            }
+        }else{
+            $msg    ="<br>Anda Harus <strong>Login</stRong> terlebih dahulu untuk dapat Melakukan Penilaian pada Materi";
+            $logo   ="cross";
+        }
+        $response=array("success"=>'yes',"id"=>$request->id,"return"=>"x","logo"=>$logo,"msg"=>$msg,"rate"=>round($avg_stars,1));
         return response()->json($response);
         exit;
     }

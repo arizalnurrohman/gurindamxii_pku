@@ -676,7 +676,9 @@
         url : "{{url('/front/post_ajax/post_rating/rate_this')}}",
         type : 'POST',
         data : {
-            'numberOfWords' : 10
+            'numberOfWords' : obj.value,
+            'id' : id,
+            
         },
         dataType:'json',
         headers: {
@@ -684,11 +686,11 @@
         },
         success : function(data) {              
           $.gritter.add({
-            text: '<div style="text-align:center"><img src="/assets/images/check.png" width="50px"></div><div style="text-align:justify">Anda berhasil Memberikan Penilaian Rating dengan Penilaian <strong>Bintang '+obj.value+'</stRong> Untuk Materi <strong>JUDUL_MATERINYA</stRong> test '+id+'.</div>',
+            text: '<div style="text-align:center"><img src="/assets/images/'+data.logo+'.png" width="50px"></div><div style="text-align:justify">'+data.msg+'</div>',
           });
           //$('.ratelist').hide();
           $('.count_star').empty();
-          $('.count_star').append('4.7 (<i class="fa-solid fa-star" style="color:red;"></i>)');
+          $('.count_star').append(' '+data.rate+' (<i class="fa-solid fa-star" style="color:red;"></i>)');
           //$(".reratelist").css("display", "block");
           $('#rate').focus();   
           

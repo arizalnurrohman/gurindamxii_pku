@@ -166,7 +166,9 @@ class FrontController extends Controller
                                 ->where('hlEnd',">",date('Y-m-d H:i:s'))
                                 ->orderBy('hlStart', 'ASC')
                                 ->get();                        
-        
+        // print "<pre>";
+        // print_r($query_highlight);
+        // exit;
         $data['data']           =$query;
         $data['populer']        =$query_populer;
         $data['category']       =$query_category;

@@ -473,7 +473,7 @@
                     </style>
                     
                     <div class="rate" id="rate" style="display: table-cell;vertical-align: middle">
-                        <span class="count_star">4.5(<i class="fa-solid fa-star" style="color:red;"></i>)</span>
+                        <span class="count_star">{{$data['rating']}}(<i class="fa-solid fa-star" style="color:red;"></i>)</span>
                         <input type="radio" class="ratelist" id="star5" name="rate" value="5" onClick="addRating(this,'{{$data['data']->pgPermalink}}');"/>
                         <label for="star5" class="ratelist" title="5">5 stars</label>
                         <input type="radio" class="ratelist" id="star4" name="rate" value="4" onClick="addRating(this,'{{$data['data']->pgPermalink}}');"/>
