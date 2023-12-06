@@ -91,6 +91,10 @@ Route::group(['middleware' => ['role:administrator']], function () {
             return $response;
         });
 
+
+        Route::resource('member','MemberController');
+        Route::resource('member_new','MemberNewController');
+
         #Route::resource('create_submateri','PembelajaranController');  
         #Route::get('create_submateri', 'PembelajaranController@open'); 
         

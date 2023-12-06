@@ -87,6 +87,12 @@ php artisan module:make-migration create_newsletter_queue_table Ipanel
 
 php artisan module:make-migration create_newsletter_template_table Ipanel
 
+php artisan module:make-controller MemberController Ipanel
+php artisan module:make-model MemberModel Ipanel
+
+php artisan module:make-controller MemberNewController Ipanel
+php artisan module:make-model MemberNewModel Ipanel
+
 
 
 

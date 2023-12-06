@@ -8,29 +8,29 @@ use Illuminate\Routing\Controller;
 
 use Illuminate\Support\Facades\DB;
 
-class PengetahuanRatingController extends Controller
+class MemberNewController extends Controller
 {
-    public $table_user                  ="users";
-    public $table_pengetahuan_rating    ="pengetahuan_rating";
-    public $table_pengetahuan           ="pengetahuan";
+    public $table_member           ="users";
+    public $table_model_has_roles  ="model_has_roles";
     
-    public $paging                      =20;
+    public $paging                 =20;
     /**
      * Display a listing of the resource.
      * @return Renderable
      */
     public function index()
     {
-        $query      = DB::table($this->table_pengetahuan_rating);
+        $query      = DB::table($this->table_member);
         if(isset($_GET['search'])){
-            $query         = $query->where($this->table_user.'.name',"like","%".$_GET['search']."%");
+            $query         = $query->where('name',"like","%".$_GET['search']."%");
         }
-        $query             =$query->leftJoin($this->table_user, $this->table_pengetahuan_rating.'.id_user', '=', $this->table_user.'.id');
-        $query             =$query->leftJoin($this->table_pengetahuan, $this->table_pengetahuan_rating.'.pgId', '=', $this->table_pengetahuan.'.pgId');
-        $query             =$query->orderBy($this->table_pengetahuan_rating.'.created_at','DESC');
+        $query             =$query->leftJoin($this->table_model_has_roles, $this->table_member.'.id', '=', $this->table_model_has_roles.'.model_id');
+        $query             =$query->where($this->table_model_has_roles.'.role_id', 2);
+        $query             =$query->where($this->table_member.'.verified', 'n');
+        $query             =$query->orderBy('created_at','DESC');
         $query             =$query->paginate($this->paging);
         $data['data']           =$query;
-        return view('ipanel::pengetahuan_rating.index',['data'=>$data]);
+        return view('ipanel::member_new.index',['data'=>$data]);
     }
 
     /**

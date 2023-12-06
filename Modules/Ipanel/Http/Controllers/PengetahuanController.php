@@ -91,6 +91,11 @@ class PengetahuanController extends Controller
         $query=DB::table("pengetahuan_comment")->select('cmId')->where("pgId",$id)->count();
         return $query;
     }
+    public static function get_star($id){
+        $avg_stars  = DB::table("pengetahuan_rating")->where("pgId",$id)->avg('rtRate');
+        return round($avg_stars,1);
+    }
+    
 
     /**
      * Show the form for creating a new resource.

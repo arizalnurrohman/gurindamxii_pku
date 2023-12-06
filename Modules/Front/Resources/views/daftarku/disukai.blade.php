@@ -72,7 +72,7 @@
                                             <div class="col-xs-6 col-sm-3" style="margin-bottom:10px;">
                                                 <img src="{{asset('storage/images/assets_pengetahuan/'.$maval->pgImage)}}" width="100%">
                                             </div>
-                                            <div class="col-xs-6 col-sm-9" style="margin-bottom:10px;border-bottom:dashed 1px #5E1362">
+                                            <div class="col-xs-6 col-sm-9" style="margin-bottom:10px;border-bottom:dashed 1px #5E1362;position: relative">
                                                 <div class="row">
                                                     <div class="col-xs-12">
                                                         <a href="{{url("front/materi/".$maval->pgPermalink)}}" style="font-size:16px;">{{$maval->pgTitle}}</a>
@@ -82,6 +82,16 @@
                                                     </div>
                                                     <div class="col-xs-12" style="font-size:12px;">
                                                         {{date("d M Y H:i:s",strtotime($maval->created_at))}} WIB
+                                                    </div>
+                                                    <div class="col-xs-12" style="font-size:12px;text-align:right;bottom:0px;position:absolute;bottom: 8px;">
+                                                        <form method="POST" class="delete-form" data-route="{{route('daftarku.destroy',$maval->lkId)}}" style="display:inline" onCLick="return confirm('Apakah anda yakin akan menghapus data ??')">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button class="btn btn-sm btn-white btn-warning btn-bold">
+                                                                <i class="ace-icon fa fa-trash-o bigger-120 orange"></i>
+                                                                Hapus Sukai
+                                                            </button>
+                                                        </form>
                                                     </div>
                                                 </div>
                                             </div>

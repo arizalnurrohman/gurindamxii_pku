@@ -624,6 +624,37 @@
 							<?php } ?>
 						</ul>
 					</li>
+					<?php
+						$arx['mbr']['link'][0]="member";
+						$arx['mbr']['link'][1]="member_new";
+
+						$arx['mbr']['name'][0]="Member";
+						$arx['mbr']['name'][1]="Member Baru";
+
+						$arx['mbr']['icon'][0]="Member";
+						$arx['mbr']['icon'][1]="Member Baru";
+					?>
+					<li class="{{(in_array(Request::segment(2),$arx['mbr']['link']))?'active open':''}}">
+						<a href="" class="dropdown-toggle">
+							<i class="menu-icon fa fa-group"></i>
+							<span class="menu-text"> Member </span>
+							<b class="arrow fa fa-angle-down"></b>
+						</a>
+						<b class="arrow"></b>
+						<ul class="submenu">
+							<?php 
+							foreach($arx['mbr']['name'] as $key=>$vals){?>
+							<li class="{{Request::segment(2)==$arx['mbr']['link'][$key]? 'active':''}}">
+								<a href="{{url('/ipanel/'.$arx['mbr']['link'][$key])}}">
+									<i class="menu-icon fa fa-caret-right"></i>
+									{{$vals}}
+								</a>
+								<b class="arrow"></b>
+							</li>
+							<?php } ?>
+						</ul>
+					</li>
+					
 
                     <li class="{{Request::segment(2)=='hubungi_admins'? 'active':''}}">
 						<a href="{{url('/ipanel/hubungi_admins')}}">

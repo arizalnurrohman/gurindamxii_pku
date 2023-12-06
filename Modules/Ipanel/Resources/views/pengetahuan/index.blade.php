@@ -50,6 +50,7 @@
                 <th class="center" style="width:35px;">#</th>
                 <th style="width:80px" class="hidden-480">Gambar</th>
                 <th>Pengetahuan</th>
+                <th style="width:20px;"><i class="fa fa-star-o bigger-120"></i></th>
                 <th style="width:20px;"><i class="fa fa-eye bigger-120"></i></th>
                 <th style="width:20px;"><i class="fa fa-comments bigger-120"></i></th>
                 <th style="max-width:80px">&nbsp</th>
@@ -62,6 +63,7 @@
             @foreach($data['data'] as $catkey=>$catpem)
             @php
                 $comments   = Modules\Ipanel\Http\Controllers\PengetahuanController::get_count($catpem->pgId);
+                $star_rate  = Modules\Ipanel\Http\Controllers\PengetahuanController::get_star($catpem->pgId);
             @endphp
             <tr>
                 <td class="center">{{($data['data']->currentPage() - 1) * $data['data']->perPage() + $loop->iteration}}</td>
@@ -92,6 +94,7 @@
                         */
                         ?>
                 </td>
+                <td>{{$star_rate}}</td>
                 <td>{{$catpem->pgViewed}}</td>
                 <td>{{$comments}}</td>
                 <td>

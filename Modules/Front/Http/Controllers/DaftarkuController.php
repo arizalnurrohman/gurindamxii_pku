@@ -86,7 +86,23 @@ class DaftarkuController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $data_get = DB::table($this->table_pengetahuan_like)
+                            ->where('lkId', $id)
+                            ->first();
+        if(!$data_get){                    
+            return response()->json(['errors'=>"Gagal Menghapus Data"]);
+            exit;
+        }else{ 
+            $run_queryx=DB::table($this->table_pengetahuan_like)->where('lkId', $data_get->lkId)->delete();
+            if($run_queryx){
+                #return response()->json(['success'=>route('daftarku/disukai','disukai')]);#daftarku/disukai/sukai
+                return redirect()->to('/front/daftarku/disukai/sukai');
+                exit;
+            }else{
+                return response()->json(['errors'=>"Gagal Menghapus Data.."]);
+                exit;
+            }
+        }
     }
 
     public function disukai(request $request)
