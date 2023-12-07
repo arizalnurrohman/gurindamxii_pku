@@ -282,10 +282,12 @@ class PostAjaxController extends Controller
 
     public function post_rating(Request $request,$id){
         #$request->numberOfWords
+        $data_pg    = DB::table($this->table_pengetahuan)->where('pgPermalink', $request->id)->first();
+        $avg_stars  = DB::table($this->table_pengetahuan_rating)->where("pgId",$data_pg->pgId)->avg('rtRate');
         if(session()->get('USER_LOGIN')){
             $id_user    =session()->get('USER_LOGIN.ID');
-            $data_pg    = DB::table($this->table_pengetahuan)->where('pgPermalink', $request->id)->first();
-            $avg_stars  = DB::table($this->table_pengetahuan_rating)->where("pgId",$data_pg->pgId)->avg('rtRate');
+            
+            
             if($data_pg){
                 $check_rt    = DB::table($this->table_pengetahuan_rating)->where('pgId', $data_pg->pgId)->where('id_user', $id_user)->first();
                 if(!$check_rt){

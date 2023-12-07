@@ -42,7 +42,10 @@
 
   <!-- Vendor CSS Files -->
   <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
-  <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"> -->  <?php #OLD BOOTSRAP ?>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
   <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
   <link href="/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
   <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
@@ -200,7 +203,8 @@
   <div id="preloader"></div>
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
-  <script src="/assetsi/js/jquery-2.1.4.min.js"></script>
+  <!-- <script src="/assetsi/js/jquery-2.1.4.min.js"></script> --><?php #OLD ?>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <!-- Vendor JS Files -->
   <script src="/assets/vendor/purecounter/purecounter_vanilla.js"></script>
   <script src="/assets/vendor/aos/aos.js"></script>
@@ -228,8 +232,11 @@
   
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
-  <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+  <!-- <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script> -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.js"></script>
+  
 
   <!-- <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script> -->
@@ -530,14 +537,14 @@
                                 +'</div>'    
                             +'</div>'
                             +'<div class="" style="font-size:20px; padding:5px;text-align:right">'
-                              +'<i class="fa-solid fa-video"></i>&nbsp;'
+                              +''+value.typec+''
                             +'</div>'
                             +'<div class="" style="font-size:15px; padding:5px 0px 0px 15px;margin-top:-20px;">'
-                              +'<span style="margin-top:0px;font-weight:bold">'
+                              +'<span style="margin-top:0px;"  class="font-italic">'
                                 +''+value.cat+''
                               +'</span>'
                             +'</div>'
-                            +'<div class="member-info" style="margin-top:0px; padding: 0px 10px 15px 15px;text-align:justify; font-size:13px; font-weight:bold">'
+                            +'<div class="member-info" style="margin-top:0px; padding: 0px 10px 15px 15px;text-align:justify; font-size:15px; font-weight:bold">'
                               +'<a href="'+value.url+'" style="color:#1A3773;">'+value.title+'</a>'
                             +'</div>'
                         +'</div>'
@@ -619,7 +626,7 @@
                                 +'</div>'    
                             +'</div>'
                             +'<div class="" style="font-size:20px; padding:5px;text-align:right">'
-                              +'<i class="fa-solid fa-video"></i>&nbsp;'
+                              +''+value.typec+''
                             +'</div>'
                             +'<div class="" style="font-size:15px; padding:5px 0px 0px 15px;margin-top:-20px;">'
                               +'<span style="margin-top:0px;font-weight:bold">'

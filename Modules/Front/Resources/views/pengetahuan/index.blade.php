@@ -357,6 +357,7 @@
                         @php
                         $content_type = Modules\Front\Http\Controllers\FrontController::get_typecontent($pgval->pgId);
                         $comments     = Modules\Front\Http\Controllers\FrontController::get_count($pgval->pgId);
+                        $star         = Modules\Front\Http\Controllers\MateriController::get_star($pgval->pgId);
                         @endphp
                     <?php $number=$pgkey+1; if($number>4){ $number=1;} ?>
                     <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
@@ -377,7 +378,7 @@
                                 </div>
                                 <div style="float:right">    
                                     <a style="color:#FFD584"><i class="fa-regular fa-comment"></i> {{$comments}}</a>
-                                    <a style="color:#FFD584"><i class="fa-regular fa-star"></i> {{rand(1,5)}}</a>
+                                    <a style="color:#FFD584"><i class="fa-regular fa-star"></i> {{$star}}</a>
                                     <a style="color:#FFD584"><i class="fa-regular fa-eye"></i> {{$pgval->pgViewed}}</a>
                                 </div>    
                             </div>
@@ -395,12 +396,12 @@
                                 &nbsp;
                             </div>
                             <div class="" style="font-size:15px; padding:5px 0px 0px 15px;margin-top:-20px;">
-                                <span style="margin-top:0px;font-weight:bold">
+                                <span style="margin-top:0px;" class="font-italic">
                                     {{$pgval->catName}}
                                     <?php /*<a href="{{url("front/materi/?cari_filter[]=".$pgval->catPermalink)}}" style="color:#C53A54">{{$pgval->catName}}</a>*/ ?>
                                 </span>
                             </div>
-                            <div class="member-info" style="margin-top:0px; padding: 0px 10px 15px 15px;text-align:justify; font-size:13px; font-weight:bold">
+                            <div class="member-info" style="margin-top:0px; padding: 0px 10px 15px 15px;text-align:justify; font-size:15px; font-weight:bold">
                                 <a href="{{url("front/materi/".$pgval->pgPermalink)}}" style="color:#1A3773;">{{$pgval->pgTitle}}</a>
                             </div>
                         </div>

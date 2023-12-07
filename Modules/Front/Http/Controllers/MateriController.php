@@ -205,12 +205,14 @@ class MateriController extends Controller
                             ->leftJoin($this->table_pengetahuan_read, $this->table_pengetahuan.'.pgId', '=', $this->table_pengetahuan_read.'.pgId')
                             ->where('pgPermalink', $id)
                             ->first();
-        $data_get->content=DB::table($this->table_pengetahuan_content)
-                            ->leftJoin($this->table_pengetahuan_read_content, $this->table_pengetahuan_content.'.pcId', '=', $this->table_pengetahuan_read_content.'.pcId')
-                            ->where('pgId', $data_get->pgId)
-                            ->orderby($this->table_pengetahuan_content.'.pcId', 'ASC')
-                            ->get();
+        $query_content  =DB::table($this->table_pengetahuan_content);
+        #$query_content  =$query_content->leftJoin($this->table_pengetahuan_read_content, $this->table_pengetahuan_content.'.pcId', '=',$this->table_pengetahuan_read_content.'.pcId');
         
+        if(session()->get('USER_LOGIN.ID')){
+             $query_content=$query_content->leftJoin($this->table_pengetahuan_read_content, $this->table_pengetahuan_content.'.pcId', '=',$this->table_pengetahuan_read_content.'.pcId');
+        }
+        $query_content=$query_content->where('pgId', $data_get->pgId)->orderby($this->table_pengetahuan_content.'.pcId', 'ASC')->get();                    
+        $data_get->content=$query_content;
         #INSERT INTO LOG....................................................
         #paId 	id_user 	paType 	paModule 	refId 	created_at 	updated_at 	
         #CHECK IP FIRST-------------------------------------------------------
@@ -271,7 +273,9 @@ class MateriController extends Controller
             'pgViewed'        => ($data_get->pgViewed)+1,
         ];
         $update_view=DB::table($this->table_pengetahuan)->where('pgPermalink', $id)->update($payload);
-        #END COUNT VIEW............................................................................                
+        #END COUNT VIEW............................................................................    
+        #LAST_RATE
+        $last_rate=DB::table($this->table_pengetahuan_rating)->select('rtRate')->where("pgId",$data_get->pgId)->where("id_user",session()->get('USER_LOGIN.ID'))->first();           
         #$(this).find("input[class='myClass']").val())
         $data=array(
             "summernote"=>array(
@@ -284,6 +288,7 @@ class MateriController extends Controller
             "materi_lain"   =>$data_om,#array("asd","asdasd","asdasdas"),
             "komentar"      =>$data_com,
             "rating"        =>round((DB::table($this->table_pengetahuan_rating)->where("pgId",$data_get->pgId)->avg('rtRate')),1),
+            "last_rate"     =>session()->get('USER_LOGIN.ID') ? ($last_rate ? $last_rate->rtRate :0 ) : 0,
             "new_ajax"      =>"
                             $('.post_comments').submit(function(e){
                                 e.preventDefault(); 
@@ -597,6 +602,15 @@ class MateriController extends Controller
         return $data_img;   
     }
 
+    public static function get_typecontents($paid){
+        $data_img=DB::table("pengetahuan_content","pcId")
+                ->select('pcContentType')
+                ->where('pgId', $paid)
+                ->groupBy('pcContentType')
+                ->get();
+        return $data_img;   
+    }
+
     public function get_content($contentlink){
         $data_ct=DB::table($this->table_pengetahuan_content)
                 ->select("pcId",$this->table_pengetahuan_content.".pgId","pcTitle",$this->table_pengetahuan.".pgTitle",$this->table_pengetahuan.".pgType")
@@ -616,9 +630,10 @@ class MateriController extends Controller
         // print "</pre>";
         // exit;
         if($get_user->verified=="n"){
-            $notification ='<div style="text-align:center">
+            /*<div style="text-align:center">
                             <img src="/assets/images/cross.png" width="50px">
-                        </div>
+                        </div>*/
+            $notification ='
                         <div style="text-align:justify">
                            Anda harus Memverifikasi Akun anda terlebih dahulu untuk dapat menggunakan Fitur ini.
                         </div>';
@@ -719,6 +734,10 @@ class MateriController extends Controller
         $query=DB::table("pengetahuan_comment")->select('cmId')->where("pgId",$id)->count();
         return $query;
     }
+    public static function get_star($id){
+        $avg_stars  = DB::table("pengetahuan_rating")->where("pgId",$id)->avg('rtRate');
+        return round($avg_stars,1);
+    }
 
     public function filter_category(Request $request,$id){
         $idexp              =explode("-",$id);
@@ -755,6 +774,17 @@ class MateriController extends Controller
         $no=0;
         $data_return=array();
         foreach($query as $key=>$val){
+            $star         = $this->get_star($val->pgId);
+            $ftype        ="";
+            foreach($this->get_typecontents($val->pgId) as  $ctid=>$ctval){
+                if($ctval->pcContentType =='document'){
+                    $ftype.='<i class="fa-regular fa-file-pdf"></i>&nbsp;';
+                }elseif($ctval->pcContentType =='video'){
+                    $ftype.='<i class="fa-solid fa-video"></i>&nbsp;';
+                }else{
+                    $ftype.='<i class="fa-solid fa-newspaper"></i>&nbsp;';
+                }
+            }
             $data_return[$no]=array(                
                             "title"     =>$val->pgTitle,
                             "img"       =>asset('storage/images/assets_pengetahuan/'.$val->pgImage),
@@ -763,11 +793,11 @@ class MateriController extends Controller
                             "estimate"  =>$val->pgEstimation,
                             "type"      =>$val->pgType,
                             "comments"  =>$this->get_count($val->pgId),
-                            "star"      =>"4.7",
+                            "star"      =>$star,
                             "view"      =>$val->pgViewed,
                             "cat"       =>$val->catName,
                             "caturl"    =>url("front/materi/?cari_filter[]=".$val->catPermalink),
-                            "typec"     =>$this->get_typecontent($val->pgId),
+                            "typec"     =>$ftype,
                             );
             $no++;
         }
@@ -899,6 +929,18 @@ class MateriController extends Controller
         $no=0;
         $data_return=array();
         foreach($query as $key=>$val){
+            $star           = $this->get_star($val->pgId);
+            $ftype          ="";
+            $type_content_f =$this->get_typecontents($val->pgId);
+            foreach($type_content_f as  $ctid=>$ctval){
+                if($ctval->pcContentType =='document'){
+                    $ftype.='<i class="fa-regular fa-file-pdf"></i>&nbsp;';
+                }elseif($ctval->pcContentType =='video'){
+                    $ftype.='<i class="fa-solid fa-video"></i>&nbsp;';
+                }else{
+                    $ftype.='<i class="fa-solid fa-newspaper"></i>&nbsp;';
+                }
+            }
             $data_return[$no]=array(                
                             "title"     =>$val->pgTitle,
                             "img"       =>asset('storage/images/assets_pengetahuan/'.$val->pgImage),
@@ -907,11 +949,13 @@ class MateriController extends Controller
                             "estimate"  =>$val->pgEstimation,
                             "type"      =>$val->pgType,
                             "comments"  =>$this->get_count($val->pgId),
-                            "star"      =>"4.7",
+                            "star"      =>$star,
                             "view"      =>$val->pgViewed,
                             "cat"       =>$val->catName,
                             "caturl"    =>url("front/materi/?cari_filter[]=".$val->catPermalink),
-                            "typec"     =>$this->get_typecontent($val->pgId),
+                            "typec"     =>$ftype,
+                            "jtypec"    =>count($type_content_f),
+                            "ctypec"    =>$type_content_f,
                             );
             $no++;
         }

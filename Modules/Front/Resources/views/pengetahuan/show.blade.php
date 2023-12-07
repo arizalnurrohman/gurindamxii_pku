@@ -306,6 +306,7 @@
                     }
                 }
             </style>
+            
             <div class="accordion js-accordion">
                 @foreach($data['data']->content as $ctid=>$ctval)
                     @php
@@ -322,9 +323,13 @@
                             @endif
                             &nbsp;
                             {{$ctval->pcTitle? $ctval->pcTitle : 'Konten'}} &nbsp;
-                            @if($ctval->rcId)
-                            <span class="title_check"><i class='fa-solid fa-check'></i>Selesai Dibaca</span>
-                            @endif
+                            @auth
+                                @if (\Illuminate\Support\Facades\Auth::user()->hasRole('user')  == 'user')
+                                    @if($ctval->rcId)
+                                    <span class="title_check"><i class='fa-solid fa-check'></i>Selesai Dibaca</span>
+                                    @endif
+                                @endif
+                            @endauth
                         </div> 
                         
                         <div class="accordion-body js-accordion-body">
@@ -471,22 +476,21 @@
 
                         
                     </style>
-                    
-                    <div class="rate" id="rate" style="display: table-cell;vertical-align: middle">
-                        <span class="count_star">{{$data['rating']}}(<i class="fa-solid fa-star" style="color:red;"></i>)</span>
-                        <input type="radio" class="ratelist" id="star5" name="rate" value="5" onClick="addRating(this,'{{$data['data']->pgPermalink}}');"/>
+                    <span class="count_star" style="margin-top:30px !important">{{$data['rating']}}(<i class="fa-solid fa-star" style="color:red;"></i>)</span>
+                    <div class="rate" id="rate" style="display: table-cell;vertical-align: middle; margin-top:-11px;">
+                        <input type="radio" class="ratelist" id="star5" name="rate" value="5" onClick="addRating(this,'{{$data['data']->pgPermalink}}');" {{($data['last_rate']==5 ? 'checked="Checked"':"")}}/>
                         <label for="star5" class="ratelist" title="5">5 stars</label>
-                        <input type="radio" class="ratelist" id="star4" name="rate" value="4" onClick="addRating(this,'{{$data['data']->pgPermalink}}');"/>
+                        <input type="radio" class="ratelist" id="star4" name="rate" value="4" onClick="addRating(this,'{{$data['data']->pgPermalink}}');" {{($data['last_rate']==4 ? 'checked="Checked"':"")}}/>
                         <label for="star4" class="ratelist" title="4">4 stars</label>
-                        <input type="radio" class="ratelist" id="star3" name="rate" value="3" onClick="addRating(this,'{{$data['data']->pgPermalink}}');"/>
+                        <input type="radio" class="ratelist" id="star3" name="rate" value="3" onClick="addRating(this,'{{$data['data']->pgPermalink}}');" {{($data['last_rate']==3 ? 'checked="Checked"':"")}}/>
                         <label for="star3" class="ratelist" title="3">3 stars</label>
-                        <input type="radio" class="ratelist" id="star2" name="rate" value="2" onClick="addRating(this,'{{$data['data']->pgPermalink}}');"/>
+                        <input type="radio" class="ratelist" id="star2" name="rate" value="2" onClick="addRating(this,'{{$data['data']->pgPermalink}}');" {{($data['last_rate']==2 ? 'checked="Checked"':"")}}/>
                         <label for="star2" class="ratelist" title="2">2 stars</label>
-                        <input type="radio" class="ratelist" id="star1" name="rate" value="1" onClick="addRating(this,'{{$data['data']->pgPermalink}}');"/>
+                        <input type="radio" class="ratelist" id="star1" name="rate" value="1" onClick="addRating(this,'{{$data['data']->pgPermalink}}');" {{($data['last_rate']==1 ? 'checked="Checked"':"")}}/>
                         <label for="star1" class="ratelist" title="1">1 star</label>
                         <a href="#" class="reratelist" style="display:none">Ulang beri Rate</a>
-
                     </div>
+                    
                 </div>
                 <!-- END STAR BUTTON-->
                 <div class="col-lg-9 col-xs-12">
